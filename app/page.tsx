@@ -1,5 +1,17 @@
 import Image from 'next/image'
 
+// page is the homepage route
+// to turn any component into a client component, add the "use client" directive at the top of the page
+// hooks must be in a client-side component
+
+// in any sub-route, can have your own layout (shown on all subroutes), error component, loading component
+
+/*
+  - SSR: Server Side Rendering - each request to server is a new data fetch
+  - SSG: Static Side Generation - automatically request and cache data (good for data that doesn't change frequently)
+  - ISR: Incremental Static Regeneration - SSG but with a revalidation time (good for data that changes frequently)
+*/
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
