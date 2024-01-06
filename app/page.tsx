@@ -10,7 +10,6 @@ import Image from 'next/image'
   - SSR: Server Side Rendering - each request to server is a new data fetch
   - SSG: Static Side Generation - automatically request and cache data (good for data that doesn't change frequently)
   - ISR: Incremental Static Regeneration - SSG but with a revalidation time (good for data that changes frequently)
-  
 */
 
 export default function Home() {
