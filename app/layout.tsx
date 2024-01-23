@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 }
 
 // layout is used on every single page in your app so often put your header/footer here
+// all components are wrapped as its children
 
 export default function RootLayout({
   children,
