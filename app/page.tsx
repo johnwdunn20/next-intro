@@ -7,10 +7,19 @@ import Image from 'next/image'
 // in any sub-route, can have your own layout (shown on all subroutes), error component, loading component
 
 /*
-  - SSR: Server Side Rendering - each request to server is a new data fetch
+  - SSR: Server Side Rendering - each request to server is a new data fetch. Occurs when fetch requests specify no cache
   - SSG: Static Side Generation - automatically request and cache data (good for data that doesn't change frequently)
-  - ISR: Incremental Static Regeneration - SSG but with a revalidation time (good for data that changes frequently)
+  - ISR: Incremental Static Regeneration - SSG but with a revalidation time (good for data that changes frequently). Occurs when you specify the revalidation time interval
 */
+
+// To create metadata for a page, add a meta object to the page component
+// Static metadata:
+export const metadata = {
+  title: 'Home',
+}
+
+// Dynamic metadata:
+// *Not taking notes on this
 
 export default function Home() {
   return (
