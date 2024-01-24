@@ -1,5 +1,7 @@
 import { ReactNode } from 'react'
-import '../styles/globals.css'
+import '@styles/globals.css'
+import Nav from '@components/Nav';
+import Provider from '@components/Provider';
 
 export const metadata = {
   title: "Fill in later",
@@ -19,6 +21,7 @@ const RootLayout = ({children}: LayoutProps) => {
         </div>
 
         <main className="app">
+          <Nav/>
           {children}
         </main>
       </body>
