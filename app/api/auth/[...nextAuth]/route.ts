@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Auth0Provider from "next-auth/providers/auth0";
-
-// console.log('CLIENTID: ', process.env.GOOGLE_CLIENT_ID);
+import { connectToDB } from '@utils/databse';
+import User from "@models/user";
 
 // configured google here: https://console.cloud.google.com/apis/credentials/consent?project=social-media-412203
 
@@ -20,13 +20,37 @@ const handler = NextAuth({
   ],
 
   async session({session}) {
+    try {
+      const sessionUser = await User.findOne({ email: session.user.email });
 
+      if (sessionUser) {
+        session.user.id = sessionUser?._id.toString();
+      }
+
+      return session;
+
+    } catch(e) {
+      console.log('Error: ', e);
+    }
   },
   async signIn({ profile }) {
     try {
-      
-    } catch (e) {
+      await connectToDB();
 
+      // check if user exists in db
+      const user = await User.findOne({ email: profile.email });
+      // if not, create user in db
+      if (!user) {
+        await User.create({
+          email: profile.email,
+          username: profile.name.replace(' ', '').toLowerCase(),
+          image: profile.picture,
+        });
+      }
+
+      return true;
+    } catch(e) {
+      console.log('Error: ', e);
     }
   }
 });
