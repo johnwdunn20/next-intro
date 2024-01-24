@@ -83,38 +83,57 @@ const Nav = () => {
       <div className="sm:hidden flex relative">
         {isLoggedIn ? (
           <div className="flex">
-            <Link href="/create" className="black_btn">
-              Create Post
-            </Link>
-            <button
-              type="button"
-              className="outline_btn"
-              onClick={() => {setToggleDropdown((prev) => !prev)}} // button should open a menu
-            >
-              Something
-            </button>
-            <Link href="/profile" className="black_btn">
-              <Image
-                src="/assets/images/logo.svg"
-                alt="profile"
-                width={37}
-                height={37}
-                className="rounded-full"
-              ></Image>
-            </Link>
+            <Image
+              src="/assets/images/logo.svg"
+              alt="profile"
+              width={37}
+              height={37}
+              className="rounded-full"
+              onClick={() => setToggleDropdown(!toggleDropdown)}
+            ></Image>
+
+            {toggleDropdown && (
+              <div className="dropdown">
+                <Link
+                  href='/profile'
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                My Profile
+                </Link>
+                <Link
+                  href='/create'
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                Create Prompt
+                </Link>
+                <button
+                  type="button"
+                  className="mt-5 w-full black_btn"
+                  onClick={() => {
+                    handleSignOut();
+                    setToggleDropdown(false);
+                  }}
+                >
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           <>
             {providers &&
-              Object.values(providers).map((provider) => (
-                <button
+              Object.values(providers).map((provider) => {
+                // need to handle provider type
+                return (<button
                   key={provider.name}
                   className="black_btn"
                   onClick={() => signIn(provider.id)}
                 >
                   Sign In
-                </button>
-              ))}
+                </button> ) 
+              })}
           </>
         )}
       </div>
