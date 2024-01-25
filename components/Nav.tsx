@@ -10,8 +10,9 @@ import { Providers } from "next-auth/providers";
 // object-contain is used to ensure images/video resize to fit the container without losing aspect ratio
 
 const Nav = () => {
-  const isLoggedIn = true; // placeholder for now
-
+  const { data: session } = useSession();
+  console.log('Session: ', session);
+  console.log('image: ', session?.user?.image);
   const [toggleDropdown, setToggleDropdown] = useState(false)
 
   const [providers, setProviders] = useState<Providers | null>(null);
@@ -23,6 +24,8 @@ const Nav = () => {
     };
     getProvidersList();
   }, []);
+
+  console.log('Providers: ', providers);
 
   // function to call signOut to avoid type errors
   const handleSignOut = () => signOut();
@@ -39,9 +42,10 @@ const Nav = () => {
         />
         <p className="logo_text">Promptopia</p>
       </Link>
+
       {/* Desktop Navigation */}
       <div className="sm:flex hidden">
-        {isLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create" className="black_btn">
               Create Post
@@ -55,7 +59,7 @@ const Nav = () => {
             </button>
             <Link href="/profile" className="black_btn">
               <Image
-                src="/assets/images/logo.svg"
+                src={session?.user?.image || ''}
                 alt="profile"
                 width={30}
                 height={30}
@@ -80,8 +84,8 @@ const Nav = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className="sm:hidden flex relative">
-        {isLoggedIn ? (
+      {/* <div className="sm:hidden flex relative">
+        {session?.user ? (
           <div className="flex">
             <Image
               src="/assets/images/logo.svg"
@@ -136,7 +140,7 @@ const Nav = () => {
               })}
           </>
         )}
-      </div>
+      </div> */}
     </nav>
   );
 };

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 let isConnected = false;
 
 export const connectToDatabase = async () => {
-  mongoose.set('strictQuery', true);
+  // mongoose.set('strictQuery', true);
 
   if (isConnected) {
     console.log('=> using existing database connection');
@@ -11,10 +11,8 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
+    await mongoose.connect(process.env.MONGODB_URI || '', {
       dbName: "social-media",
-      usenewUrlParser: true,
-      setUnifiedTopology: true,
     })
 
     isConnected = true;

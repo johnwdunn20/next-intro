@@ -1,10 +1,23 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import Auth0Provider from "next-auth/providers/auth0";
-import { connectToDB } from '@utils/databse';
+import { connectToDatabase } from '@utils/database';
 import User from "@models/user";
 
 // configured google here: https://console.cloud.google.com/apis/credentials/consent?project=social-media-412203
+
+interface UserProfile {
+  email: string;
+  name: string;
+  picture: string;
+}
+
+interface SessionUser {
+  id: string;
+  email: string;
+  name: string;
+  image?: string;
+}
 
 const handler = NextAuth({
   providers: [
@@ -18,41 +31,43 @@ const handler = NextAuth({
     //   issuer: process.env.AUTH0_DOMAIN || '',
     // }),
   ],
-
-  async session({session}) {
-    try {
-      const sessionUser = await User.findOne({ email: session.user.email });
-
-      if (sessionUser) {
-        session.user.id = sessionUser?._id.toString();
+  callbacks: {
+    async session({session}) {
+      try {
+        console.log('session: ', session);
+        const sessionUser = await User.findOne({ email: session.user.email.toLowerCase() });
+  
+        if (sessionUser) {
+          session.user.id = sessionUser?._id.toString();
+        }
+  
+        return session;
+  
+      } catch(e) {
+        console.log('Error persisting session: ', e);
       }
-
-      return session;
-
-    } catch(e) {
-      console.log('Error: ', e);
+    },
+    async signIn({ profile }) {
+      try {
+        await connectToDatabase();
+  
+        // check if user exists in db
+        const user = await User.findOne({ email: profile.email });
+        // if not, create user in db
+        if (!user) {
+          await User.create({
+            email: profile.email,
+            username: profile.name.replace(' ', '').toLowerCase(),
+            image: profile.picture,
+          });
+        }
+  
+        return true;
+      } catch(e) {
+        console.log('Error signing in: ', e);
+      }
     }
   },
-  async signIn({ profile }) {
-    try {
-      await connectToDB();
-
-      // check if user exists in db
-      const user = await User.findOne({ email: profile.email });
-      // if not, create user in db
-      if (!user) {
-        await User.create({
-          email: profile.email,
-          username: profile.name.replace(' ', '').toLowerCase(),
-          image: profile.picture,
-        });
-      }
-
-      return true;
-    } catch(e) {
-      console.log('Error: ', e);
-    }
-  }
 });
 
 export { handler as GET, handler as POST };
