@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import { Providers } from "next-auth/providers";
+import { redirect } from "next/navigation";
 
 // object-contain is used to ensure images/video resize to fit the container without losing aspect ratio
 
@@ -25,10 +26,11 @@ const Nav = () => {
     getProvidersList();
   }, []);
 
-  // console.log('Providers: ', providers);
-
   // function to call signOut to avoid type errors
-  const handleSignOut = () => signOut();
+  const handleSignOut = () => {
+    signOut();
+    redirect('/')
+  };
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
