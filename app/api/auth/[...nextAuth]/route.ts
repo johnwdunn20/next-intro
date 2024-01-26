@@ -34,7 +34,7 @@ const handler = NextAuth({
   callbacks: {
     async session({session}) {
       try {
-        console.log('session: ', session);
+        // console.log('session: ', session);
         const sessionUser = await User.findOne({ email: session.user.email.toLowerCase() });
   
         if (sessionUser) {

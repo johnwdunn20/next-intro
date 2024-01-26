@@ -11,8 +11,8 @@ import { Providers } from "next-auth/providers";
 
 const Nav = () => {
   const { data: session } = useSession();
-  console.log('Session: ', session);
-  console.log('image: ', session?.user?.image);
+  // console.log('Session: ', session);
+  // console.log('image: ', session?.user?.image);
   const [toggleDropdown, setToggleDropdown] = useState(false)
 
   const [providers, setProviders] = useState<Providers | null>(null);
@@ -25,7 +25,7 @@ const Nav = () => {
     getProvidersList();
   }, []);
 
-  console.log('Providers: ', providers);
+  // console.log('Providers: ', providers);
 
   // function to call signOut to avoid type errors
   const handleSignOut = () => signOut();

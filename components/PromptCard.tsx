@@ -1,8 +1,16 @@
 import React from 'react'
 
-const PromptCard = () => {
+interface Post {
+  _id: string;
+  creator: string;
+  prompt: string;
+  tag: string;
+}
+
+const PromptCard = ({ post } : Post) => {
+  console.log('Post: ', post);
   return (
-    <div>PromptCard</div>
+    <div>{post.prompt}</div>
   )
 }
 
