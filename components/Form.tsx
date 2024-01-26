@@ -46,7 +46,7 @@ const Form:React.FC<FormProps> = ({type, post, setPost, submitting, handleSubmit
             <span className='font-normal'> (#Coding #Math)</span>
           </span>
           <textarea
-            value={post.prompt}
+            value={post.tag}
             onChange={(e) => setPost({...post, tag: e.target.value})}
             placeholder='#tag'
             required
