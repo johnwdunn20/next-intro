@@ -6,7 +6,8 @@ import Prompt from "@models/prompt";
 export const GET = async () => {
   try {
     await connectToDatabase();
-    const prompts = await Prompt.find({});
+    const prompts = await Prompt.find({}).populate('creator');
+    console.log('prompts: ', prompts);
     return new Response(JSON.stringify(prompts), {
       status: 201,
     });
